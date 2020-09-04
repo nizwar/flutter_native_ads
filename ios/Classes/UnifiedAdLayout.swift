@@ -156,7 +156,7 @@ extension UnifiedAdLayout : GADUnifiedNativeAdLoaderDelegate {
         unifiedNativeAdView.nativeAd = nativeAd
         
         mediaView?.mediaContent = nativeAd.mediaContent
-        iconView?.image = nativeAd.icon?.image
+        iconView?.image = nativeAd.mediaContent.mainImage ?? nativeAd.icon?.image
         starRatingView?.text = String(describing: nativeAd.starRating?.doubleValue)
         storeView?.text = nativeAd.store
         priceView?.text = nativeAd.price
