@@ -20,6 +20,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import android.graphics.Color
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 
 class UnifiedAdLayout(
         context: Context,
@@ -68,6 +69,16 @@ class UnifiedAdLayout(
             callToActionView.setBackgroundResource(identifier)
         }
 
+        (arguments["background_color"] as String?)?.let(Color::parseColor)?.let { backgroundColor ->
+            unifiedNativeAdView?.setBackgroundColor(backgroundColor)
+        }
+
+        val robotoId = context.resources.getIdentifier("roboto_medium", "font", hostPackageName)
+        val roboto = ResourcesCompat.getFont(unifiedNativeAdView.context, robotoId)
+
+        headlineView.typeface = roboto
+        bodyView.typeface = roboto
+
         val ids = arguments["test_devices"] as MutableList<String>?
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()
         MobileAds.setRequestConfiguration(configuration)
@@ -78,9 +89,7 @@ class UnifiedAdLayout(
 
                     ensureUnifiedAd(it)
 
-                    (arguments["background_color"] as String?)?.let(Color::parseColor)?.let { backgroundColor ->
-                        unifiedNativeAdView?.setBackgroundColor(backgroundColor)
-                    }
+
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdImpression() {
@@ -116,7 +125,7 @@ class UnifiedAdLayout(
 
                         unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName))
                                 .let { attributionView ->
-                                    (arguments["text_attribution"] as String?)?.let { attributionView.setText(it) }
+                                    (arguments["text_attribution"] as String?)?.let { attributionView?.setText(it) }
                                     (arguments["attribution_view_font_size"] as Double?)?.toFloat()?.let { attributionView?.setTextSize(it) }
                                     (arguments["attribution_view_font_color"] as String?)?.let(Color::parseColor)?.let { attributionView?.setTextColor(it) }
                                 }
