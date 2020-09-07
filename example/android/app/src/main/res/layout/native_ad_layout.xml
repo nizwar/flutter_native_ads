@@ -17,6 +17,7 @@
             android:id="@+id/flutter_native_ad_icon"
             android:layout_width="@dimen/ad_image_size"
             android:layout_height="@dimen/ad_image_size"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
