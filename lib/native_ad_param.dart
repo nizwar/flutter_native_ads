@@ -34,9 +34,6 @@ class AndroidParam {
   bool dark;
   Color callToActionFontColor;
 
-  Color backgroundColor;
-
-
   /// Converts this param to a Map
   dynamic toMap() {
     return <String, dynamic>{
@@ -53,8 +50,7 @@ class AndroidParam {
       'attribution_view_font_color': _toAndroidColor(attributionViewFontColor),
       'call_to_action_font_size': callToActionFontSize,
       'dark': dark,
-      'call_to_action_font_color': _toAndroidColor(callToActionFontColor),
-      'background_color': _toAndroidColor(backgroundColor)
+      'call_to_action_font_color': _toAndroidColor(callToActionFontColor)
     };
   }
 

@@ -36,8 +36,7 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
             const Color.fromARGB(0xFF, 0x80, 0x00, 0xFF)
         ..callToActionFontColor = const Color.fromARGB(0xFF, 0x00, 0x00, 0x00)
         ..callToActionFontSize = 12.0
-        ..dark = true
-        ..backgroundColor = const Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF),
+        ..dark = false,
       iosParam: IOSParam()
         ..placementId = "ca-app-pub-3940256099942544/3986624511" // test
         ..bundleId = "sakebook.github.com.nativeAdsExample"

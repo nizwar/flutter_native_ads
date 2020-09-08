@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark_theme">#161616</color>
+    <color name="bg_light_theme">#FFFFFF</color>
+    <color name="bg_action_button_dark">#242424</color>
+    <color name="bg_action_button_light">#F1F2F2</color>
+</resources>

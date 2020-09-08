@@ -58,19 +58,41 @@ class UnifiedAdLayout(
         (arguments["call_to_action_font_size"] as Double?)?.toFloat()?.let(callToActionView::setTextSize)
         (arguments["call_to_action_font_color"] as String?)?.let(Color::parseColor)?.let(callToActionView::setTextColor)
         (arguments["dark"] as Boolean?)?.let { dark ->
-            val identifier = context.resources.getIdentifier(
-                    when (dark) {
-                        true -> "bg_action_button_dark"
-                        else -> "bg_action_button_light"
-                    },
-                    "drawable",
-                    hostPackageName
-            )
-            callToActionView.setBackgroundResource(identifier)
-        }
 
-        (arguments["background_color"] as String?)?.let(Color::parseColor)?.let { backgroundColor ->
-            unifiedNativeAdView?.setBackgroundColor(backgroundColor)
+            callToActionView.setBackgroundResource(
+                    context.resources.getIdentifier(
+                            when (dark) {
+                                true -> "bg_action_button_dark"
+                                else -> "bg_action_button_light"
+                            },
+                            "drawable",
+                            hostPackageName
+                    )
+            )
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                iconView?.foreground = context.getDrawable(
+                        context.resources.getIdentifier(
+                                when (dark) {
+                                    true -> "fg_ad_image_dark"
+                                    else -> "fg_ad_image_light"
+                                },
+                                "drawable",
+                                hostPackageName
+                        )
+                )
+            }
+
+            unifiedNativeAdView.setBackgroundResource(
+                    context.resources.getIdentifier(
+                            when (dark) {
+                                true -> "bg_dark_theme"
+                                else -> "bg_light_theme"
+                            },
+                            "color",
+                            hostPackageName
+                    )
+            )
         }
 
         val robotoId = context.resources.getIdentifier("roboto_medium", "font", hostPackageName)
