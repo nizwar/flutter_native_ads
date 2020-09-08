@@ -17,22 +17,8 @@ class AndroidParam {
   /// Test device ids.
   List<String> testDevices;
 
-  //Ad Title
-  double headlineFontSize;
-  Color headlineFontColor;
-
-  //Ad description
-  double bodyFontSize;
-  Color bodyFontColor;
-
   // "AD" Label
-  double attributionViewFontSize;
-  Color attributionViewFontColor;
-
-  // Button
-  double callToActionFontSize;
   bool dark;
-  Color callToActionFontColor;
 
   /// Converts this param to a Map
   dynamic toMap() {
@@ -42,15 +28,7 @@ class AndroidParam {
       'layout_name': layoutName,
       'text_attribution': attributionText,
       'test_devices': testDevices,
-      'headline_font_size': headlineFontSize,
-      'headline_font_color': _toAndroidColor(headlineFontColor),
-      'body_font_size': bodyFontSize,
-      'body_font_color': _toAndroidColor(bodyFontColor),
-      'attribution_view_font_size': attributionViewFontSize,
-      'attribution_view_font_color': _toAndroidColor(attributionViewFontColor),
-      'call_to_action_font_size': callToActionFontSize,
       'dark': dark,
-      'call_to_action_font_color': _toAndroidColor(callToActionFontColor)
     };
   }
 

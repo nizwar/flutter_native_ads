@@ -1,7 +1,6 @@
 package sakebook.github.com.native_ads
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,9 +17,8 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
-import android.graphics.Color
+import android.os.Build
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 
 class UnifiedAdLayout(
         context: Context,
@@ -36,6 +34,7 @@ class UnifiedAdLayout(
     private val headlineView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_headline", "id", hostPackageName))
     private val bodyView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_body", "id", hostPackageName))
     private val callToActionView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_call_to_action", "id", hostPackageName))
+    private val attributionView = unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName))
 
     private val mediaView: MediaView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_media", "id", hostPackageName))
     private val iconView: ImageView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_icon", "id", hostPackageName))
@@ -47,59 +46,31 @@ class UnifiedAdLayout(
     private val methodChannel: MethodChannel = MethodChannel(messenger, "com.github.sakebook.android/unified_ad_layout_$id")
     private var ad: UnifiedNativeAd? = null
 
+    private val dark = arguments["dark"] as Boolean
+    private val attributionText = arguments["text_attribution"] as String
+
     init {
 
-        (arguments["headline_font_size"] as Double?)?.toFloat()?.let(headlineView::setTextSize)
-        (arguments["headline_font_color"] as String?)?.let(Color::parseColor)?.let(headlineView::setTextColor)
+        val palette = Palette(dark, context, hostPackageName)
 
-        (arguments["body_font_size"] as Double?)?.toFloat()?.let(bodyView::setTextSize)
-        (arguments["body_font_color"] as String?)?.let(Color::parseColor)?.let(bodyView::setTextColor)
+        unifiedNativeAdView.setBackgroundColor(palette.backgroundColor)
 
-        (arguments["call_to_action_font_size"] as Double?)?.toFloat()?.let(callToActionView::setTextSize)
-        (arguments["call_to_action_font_color"] as String?)?.let(Color::parseColor)?.let(callToActionView::setTextColor)
-        (arguments["dark"] as Boolean?)?.let { dark ->
-
-            callToActionView.setBackgroundResource(
-                    context.resources.getIdentifier(
-                            when (dark) {
-                                true -> "bg_action_button_dark"
-                                else -> "bg_action_button_light"
-                            },
-                            "drawable",
-                            hostPackageName
-                    )
-            )
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                iconView?.foreground = context.getDrawable(
-                        context.resources.getIdentifier(
-                                when (dark) {
-                                    true -> "fg_ad_image_dark"
-                                    else -> "fg_ad_image_light"
-                                },
-                                "drawable",
-                                hostPackageName
-                        )
-                )
-            }
-
-            unifiedNativeAdView.setBackgroundResource(
-                    context.resources.getIdentifier(
-                            when (dark) {
-                                true -> "bg_dark_theme"
-                                else -> "bg_light_theme"
-                            },
-                            "color",
-                            hostPackageName
-                    )
-            )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            iconView?.foreground = palette.adImageForeground
         }
 
-        val robotoId = context.resources.getIdentifier("roboto_medium", "font", hostPackageName)
-        val roboto = ResourcesCompat.getFont(unifiedNativeAdView.context, robotoId)
+        headlineView.setTextColor(palette.textColor)
+        headlineView.typeface = palette.robotoRegular
 
-        headlineView.typeface = roboto
-        bodyView.typeface = roboto
+        bodyView.setTextColor(palette.textColor)
+        bodyView.typeface = palette.robotoRegular
+
+        attributionView.text = attributionText
+        attributionView.typeface = palette.robotoRegular
+
+        callToActionView.setTextColor(palette.textColor)
+        callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
+        callToActionView.typeface = palette.robotoRegular
 
         val ids = arguments["test_devices"] as MutableList<String>?
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()
@@ -108,10 +79,7 @@ class UnifiedAdLayout(
         AdLoader.Builder(context, arguments["placement_id"] as String)
                 .forUnifiedNativeAd {
                     ad = it
-
                     ensureUnifiedAd(it)
-
-
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdImpression() {
@@ -142,16 +110,7 @@ class UnifiedAdLayout(
 
                     override fun onAdLoaded() {
                         super.onAdLoaded()
-
                         rootLayout.visibility = View.VISIBLE
-
-                        unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName))
-                                .let { attributionView ->
-                                    (arguments["text_attribution"] as String?)?.let { attributionView?.setText(it) }
-                                    (arguments["attribution_view_font_size"] as Double?)?.toFloat()?.let { attributionView?.setTextSize(it) }
-                                    (arguments["attribution_view_font_color"] as String?)?.let(Color::parseColor)?.let { attributionView?.setTextColor(it) }
-                                }
-
                         methodChannel.invokeMethod("onAdLoaded", null)
                     }
                 })

@@ -17,6 +17,8 @@
             android:id="@+id/flutter_native_ad_icon"
             android:layout_width="@dimen/ad_image_size"
             android:layout_height="@dimen/ad_image_size"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,13 +32,17 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
-            android:gravity="center_vertical"
+            android:gravity="bottom"
+            android:includeFontPadding="false"
             android:maxLines="1"
+            android:padding="0dp"
+            android:textAlignment="gravity"
             android:textColor="@android:color/black"
+            android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/flutter_native_ad_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/flutter_native_ad_icon"
-            tools:text="Headline Headline Headline Headline Headline Headline Headline" />
+            tools:text="Headline" />
 
         <TextView
             android:id="@+id/flutter_native_ad_body"
@@ -44,31 +50,26 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
+            android:gravity="top"
+            android:includeFontPadding="false"
             android:maxLines="2"
+            android:padding="0dp"
+            android:textAlignment="gravity"
             android:textColor="@android:color/black"
+            android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@id/flutter_native_ad_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flutter_native_ad_headline"
-            tools:ignore="RtlHardcoded"
-            tools:text="@tools:sample/lorem/random" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_headline_body_icon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="flutter_native_ad_body,flutter_native_ad_headline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:text="Body" />
 
         <TextView
             android:id="@+id/flutter_native_ad_attribution"
-            style="@android:style/TextAppearance.Material.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end|center_vertical"
             android:maxLines="1"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="#A3A5AB"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/flutter_native_ad_call_to_action"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/flutter_native_ad_call_to_action"
@@ -76,20 +77,24 @@
 
         <TextView
             android:id="@+id/flutter_native_ad_call_to_action"
-            style="@android:style/TextAppearance.Material.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="@dimen/ad_internal_padding"
             android:background="@drawable/bg_action_button_dark"
             android:ellipsize="middle"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:padding="5sp"
+            android:paddingStart="7sp"
+            android:paddingTop="2sp"
+            android:paddingEnd="7sp"
+            android:paddingBottom="2sp"
             android:singleLine="true"
-            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/flutter_native_ad_attribution"
-            app:layout_constraintTop_toBottomOf="@id/barrier_headline_body_icon"
+            app:layout_constraintTop_toBottomOf="@id/flutter_native_ad_body"
+            tools:ignore="SmallSp"
             tools:text="INSTALL" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

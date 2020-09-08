@@ -4,4 +4,6 @@
     <color name="bg_light_theme">#FFFFFF</color>
     <color name="bg_action_button_dark">#242424</color>
     <color name="bg_action_button_light">#F1F2F2</color>
+    <color name="text_color_light">#2C2D36</color>
+    <color name="text_color_dark">#ECECEC</color>
 </resources>

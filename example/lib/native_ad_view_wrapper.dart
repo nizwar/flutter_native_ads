@@ -25,17 +25,8 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
         ..placementId = "ca-app-pub-3940256099942544/2247696110" // test
         ..packageName = "sakebook.github.com.native_ads_example"
         ..layoutName = "native_ad_layout"
-        ..attributionText = "AD"
+        ..attributionText = "реклама"
         ..testDevices = ["00000000000000000000000000000000"]
-        ..headlineFontSize = 14.0
-        ..headlineFontColor = const Color.fromARGB(0xFF, 0x20, 0x20, 0x20)
-        ..bodyFontSize = 14.0
-        ..bodyFontColor = const Color.fromARGB(0xFF, 0x00, 0x00, 0x00)
-        ..attributionViewFontSize = 10.0
-        ..attributionViewFontColor =
-            const Color.fromARGB(0xFF, 0x80, 0x00, 0xFF)
-        ..callToActionFontColor = const Color.fromARGB(0xFF, 0x00, 0x00, 0x00)
-        ..callToActionFontSize = 12.0
         ..dark = false,
       iosParam: IOSParam()
         ..placementId = "ca-app-pub-3940256099942544/3986624511" // test
