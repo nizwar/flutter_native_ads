@@ -60,17 +60,17 @@ class UnifiedAdLayout(
         }
 
         headlineView.setTextColor(palette.textColor)
-        headlineView.typeface = palette.robotoRegular
+        headlineView.typeface = palette.roboto500
 
         bodyView.setTextColor(palette.textColor)
-        bodyView.typeface = palette.robotoRegular
+        bodyView.typeface = palette.roboto500
 
         attributionView.text = attributionText
-        attributionView.typeface = palette.robotoRegular
+        attributionView.typeface = palette.roboto500
 
         callToActionView.setTextColor(palette.textColor)
         callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
-        callToActionView.typeface = palette.robotoRegular
+        callToActionView.typeface = palette.roboto400
 
         val ids = arguments["test_devices"] as MutableList<String>?
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()

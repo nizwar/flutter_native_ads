@@ -33,8 +33,8 @@ class Palette(
             lightIdName = "bg_light_theme"
     )
 
-    val robotoMedium = font("roboto_medium")
-    val robotoRegular = font("roboto_regular")
+    val roboto500 = font("roboto_medium")
+    val roboto400 = font("roboto_regular")
 
     private fun font(idName: String) = ResourcesCompat.getFont(
             context,
