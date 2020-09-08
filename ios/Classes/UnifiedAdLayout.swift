@@ -95,13 +95,13 @@ class UnifiedAdLayout : NSObject, FlutterPlatformView {
     
     private func configureView() {
         if let headlineFontSize = self.args["headline_font_size"] as? Double {
-            headlineView.font = .systemFont(ofSize: CGFloat(headlineFontSize))
+            headlineView.font = .systemFont(ofSize: CGFloat(headlineFontSize), weight: .medium)
         }
         if let headlineFontColor = self.args["headline_font_color"] as? String {
             headlineView.textColor = .fromHex(headlineFontColor)
         }
         if let bodyFontSize = self.args["body_font_size"] as? Double {
-            bodyView.font = .systemFont(ofSize: CGFloat(bodyFontSize))
+            bodyView.font = .systemFont(ofSize: CGFloat(bodyFontSize), weight: .medium)
         }
         if let bodyFontSize = self.args["body_font_color"] as? String {
             bodyView.textColor = .fromHex(bodyFontSize)
