@@ -93,6 +93,11 @@ class UnifiedAdLayout : NSObject, FlutterPlatformView {
         advertiserView?.isHidden = hide
     }
     
+    public func reloadView(args: [String: Any]) {
+        self.args = args
+        configureView()
+    }
+    
     private func configureView() {
         if let headlineFontSize = self.args["headline_font_size"] as? Double {
             headlineView.font = .systemFont(ofSize: CGFloat(headlineFontSize), weight: .medium)
