@@ -18,7 +18,9 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import android.os.Build
+import android.util.TypedValue
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class UnifiedAdLayout(
         context: Context,
@@ -37,7 +39,7 @@ class UnifiedAdLayout(
     private val attributionView = unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName))
 
     private val mediaView: MediaView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_media", "id", hostPackageName))
-    private val iconView: ImageView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_icon", "id", hostPackageName))
+    private val iconView: ImageView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_icon", "id", hostPackageName))
     private val starRatingView: TextView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_star", "id", hostPackageName))
     private val storeView: TextView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_store", "id", hostPackageName))
     private val priceView: TextView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_price", "id", hostPackageName))
@@ -55,22 +57,42 @@ class UnifiedAdLayout(
 
         unifiedNativeAdView.setBackgroundColor(palette.backgroundColor)
 
+        iconView.apply {
+            val current = (layoutParams as ConstraintLayout.LayoutParams)
+            current.width = palette.adImageSize.toInt()
+            current.height = palette.adImageSize.toInt()
+            layoutParams = current
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            iconView?.foreground = palette.adImageForeground
+            iconView.foreground = palette.adImageForeground
         }
 
         headlineView.setTextColor(palette.textColor)
         headlineView.typeface = palette.roboto500
+        headlineView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.adTextSize)
 
         bodyView.setTextColor(palette.textColor)
         bodyView.typeface = palette.roboto500
+        bodyView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.adTextSize)
 
         attributionView.text = attributionText
-        attributionView.typeface = palette.roboto500
+        attributionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.attributionTextSize)
+        attributionView.typeface = palette.roboto400
+        attributionView.apply {
+            val current = (layoutParams as ViewGroup.MarginLayoutParams)
+            current.topMargin = palette.attributionTopOffset.toInt()
+            layoutParams = current
+        }
 
         callToActionView.setTextColor(palette.textColor)
         callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
         callToActionView.typeface = palette.roboto400
+        callToActionView.apply {
+            val current = (layoutParams as ViewGroup.MarginLayoutParams)
+            current.topMargin = palette.actionButtonTopOffset.toInt()
+            layoutParams = current
+        }
 
         val ids = arguments["test_devices"] as MutableList<String>?
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()

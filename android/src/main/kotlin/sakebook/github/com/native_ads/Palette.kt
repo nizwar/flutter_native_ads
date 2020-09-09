@@ -2,6 +2,7 @@ package sakebook.github.com.native_ads
 
 import android.content.Context
 import android.graphics.Typeface
+import androidx.annotation.DimenRes
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -33,6 +34,12 @@ class Palette(
             lightIdName = "bg_light_theme"
     )
 
+    val adImageSize = dimen("ad_image_size")
+    val attributionTopOffset = dimen("attribution_top_offset")
+    val actionButtonTopOffset = dimen("action_button_top_offset")
+    val adTextSize = dimen("ad_text_size")
+    val attributionTextSize = dimen("attribution_text_size")
+
     val roboto500 = font("roboto_medium")
     val roboto400 = font("roboto_regular")
 
@@ -41,9 +48,10 @@ class Palette(
             context.resources.getIdentifier(idName, "font", hostPackageName)
     )
 
-
+    @Suppress("SameParameterValue")
     private fun drawable(darkIdName: String, lightIdName: String) =
-            context.getDrawable(
+            ContextCompat.getDrawable(
+                    context,
                     drawableId(
                             darkIdName = darkIdName,
                             lightIdName = lightIdName
@@ -80,4 +88,9 @@ class Palette(
                     type,
                     hostPackageName
             )
+
+    private fun dimen(idName: String) = context.resources.getDimension(dimenId(idName))
+
+    @DimenRes
+    private fun dimenId(idName: String) = context.resources.getIdentifier(idName, "dimen", hostPackageName)
 }
