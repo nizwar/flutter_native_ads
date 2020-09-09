@@ -20,8 +20,6 @@ class Palette(
             lightIdName = "text_color_light"
     )
 
-    val attributionTextColor = Color.parseColor("#A3A5AB")
-
     @IdRes
     val actionButtonBackgroundId = drawableId(
             darkIdName = "bg_action_button_dark",
