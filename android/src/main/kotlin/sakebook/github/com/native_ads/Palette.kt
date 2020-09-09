@@ -37,7 +37,7 @@ class Palette(
 
     val adImageSize = dip(if (tablet) 96 else 72)
     val attributionTopOffset = dip(if (tablet) 10 else 5)
-    val actionButtonTopOffset = dip(if (tablet) 12 else 7)
+    val actionButtonTopOffset = dip(if (tablet) 12 else 5)
 
     val adTextSize = if (tablet) 18f else 14f
     val attributionTextSize = if (tablet) 14f else 12f
