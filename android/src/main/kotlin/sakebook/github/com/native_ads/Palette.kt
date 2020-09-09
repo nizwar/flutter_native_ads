@@ -1,6 +1,7 @@
 package sakebook.github.com.native_ads
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import androidx.annotation.DimenRes
 import androidx.annotation.IdRes
@@ -18,6 +19,8 @@ class Palette(
             darkIdName = "text_color_dark",
             lightIdName = "text_color_light"
     )
+
+    val attributionTextColor = Color.parseColor("#A3A5AB")
 
     @IdRes
     val actionButtonBackgroundId = drawableId(

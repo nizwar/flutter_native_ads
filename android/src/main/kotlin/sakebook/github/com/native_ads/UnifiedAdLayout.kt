@@ -145,6 +145,7 @@ class UnifiedAdLayout(
 
         attributionView.text = attributionText
         attributionView.textSize = palette.attributionTextSize
+        attributionView.setTextColor(palette.attributionTextColor)
         attributionView.typeface = palette.roboto400
         attributionView.apply {
             val current = (layoutParams as ViewGroup.MarginLayoutParams)
