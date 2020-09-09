@@ -106,7 +106,7 @@ class UnifiedAdLayout(
             when (call.method) {
                 "applyTheme" -> {
                     applyTheme(dark = call.argument("dark")!!)
-                    result.success(null)
+                    result.success(true)
                 }
                 else -> result.notImplemented()
             }

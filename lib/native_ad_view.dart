@@ -103,7 +103,7 @@ class NativeAdViewController {
 
   Future<void> notifyThemeChanged(bool dark) async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      await _channel.invokeMethod<void>('applyTheme', true);
+      await _channel.invokeMethod<void>('applyTheme', dark);
     }
   }
 
