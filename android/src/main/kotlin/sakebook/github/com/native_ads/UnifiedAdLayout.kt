@@ -88,6 +88,7 @@ class UnifiedAdLayout(
         callToActionView.setTextColor(palette.textColor)
         callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
         callToActionView.typeface = palette.roboto400
+        callToActionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.actionButtonTextSize)
         callToActionView.apply {
             val current = (layoutParams as ViewGroup.MarginLayoutParams)
             current.topMargin = palette.actionButtonTopOffset.toInt()

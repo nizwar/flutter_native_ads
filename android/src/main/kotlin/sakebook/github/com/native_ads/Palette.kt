@@ -39,6 +39,7 @@ class Palette(
     val actionButtonTopOffset = dimen("action_button_top_offset")
     val adTextSize = dimen("ad_text_size")
     val attributionTextSize = dimen("attribution_text_size")
+    val actionButtonTextSize = dimen("action_button_text_size")
 
     val roboto500 = font("roboto_medium")
     val roboto400 = font("roboto_regular")
