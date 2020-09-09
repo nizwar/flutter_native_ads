@@ -14,6 +14,10 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
   bool get wantKeepAlive => true;
   NativeAdViewController _controller;
 
+  Future<void> notifyThemeChanged(bool dark) async {
+    await _controller.notifyThemeChanged(dark);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);

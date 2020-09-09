@@ -21,12 +21,12 @@ class MyApp extends StatelessWidget {
           child: ListView.separated(
             itemBuilder: (BuildContext context, int index) {
               if (index % 10 == 0) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: SizedBox(
                     width: double.infinity,
                     height: 250,
-                    child: const NativeAdViewWrapper(),
+                    child: NativeAdViewWrapper(),
                   ),
                 );
               } else {

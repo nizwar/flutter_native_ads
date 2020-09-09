@@ -101,6 +101,12 @@ class NativeAdViewController {
 
   final MethodChannel _channel;
 
+  Future<void> notifyThemeChanged(bool dark) async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await _channel.invokeMethod<void>('applyTheme', true);
+    }
+  }
+
   static MethodChannel _createChannel(int id) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return MethodChannel('com.github.sakebook.android/unified_ad_layout_$id');

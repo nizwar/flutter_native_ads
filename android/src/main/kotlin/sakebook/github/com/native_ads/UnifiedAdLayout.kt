@@ -101,6 +101,16 @@ class UnifiedAdLayout(
                 .build()
                 .loadAd(AdRequest.Builder()
                         .build())
+
+        methodChannel.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "applyTheme" -> {
+                    applyTheme(dark = call.argument("dark")!!)
+                    result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
     }
 
     private fun applyTheme(dark: Boolean) {
