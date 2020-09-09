@@ -27,6 +27,7 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
         ..layoutName = "native_ad_layout"
         ..attributionText = "реклама"
         ..testDevices = ["00000000000000000000000000000000"]
+        ..tablet = true
         ..dark = false,
       iosParam: IOSParam()
         ..placementId = "ca-app-pub-3940256099942544/3986624511" // test

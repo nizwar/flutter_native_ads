@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/flutter_native_ad_icon"
-            android:layout_width="@dimen/ad_image_size"
-            android:layout_height="@dimen/ad_image_size"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"

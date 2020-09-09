@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 
 class Palette(
         private val dark: Boolean,
+        private val tablet: Boolean,
         private val context: Context,
         private val hostPackageName: String
 ) {
@@ -34,12 +35,13 @@ class Palette(
             lightIdName = "bg_light_theme"
     )
 
-    val adImageSize = dimen("ad_image_size")
-    val attributionTopOffset = dimen("attribution_top_offset")
-    val actionButtonTopOffset = dimen("action_button_top_offset")
-    val adTextSize = dimen("ad_text_size")
-    val attributionTextSize = dimen("attribution_text_size")
-    val actionButtonTextSize = dimen("action_button_text_size")
+    val adImageSize = dip(if (tablet) 96 else 72)
+    val attributionTopOffset = dip(if (tablet) 10 else 5)
+    val actionButtonTopOffset = dip(if (tablet) 12 else 7)
+
+    val adTextSize = if (tablet) 18f else 14f
+    val attributionTextSize = if (tablet) 14f else 12f
+    val actionButtonTextSize = if (tablet) 10f else 9f
 
     val roboto500 = font("roboto_medium")
     val roboto400 = font("roboto_regular")
@@ -94,4 +96,6 @@ class Palette(
 
     @DimenRes
     private fun dimenId(idName: String) = context.resources.getIdentifier(idName, "dimen", hostPackageName)
+
+    fun dip(value: Int) = (value * context.resources.displayMetrics.density).toInt()
 }

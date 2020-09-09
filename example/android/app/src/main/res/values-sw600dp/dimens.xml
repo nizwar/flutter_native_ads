@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="ad_image_size">96dp</dimen>
-    <dimen name="attribution_top_offset">10dp</dimen>
-    <dimen name="action_button_top_offset">12dp</dimen>
-    <dimen name="ad_text_size">18sp</dimen>
-    <dimen name="attribution_text_size">14sp</dimen>
-    <dimen name="action_button_text_size">10sp</dimen>
-</resources>

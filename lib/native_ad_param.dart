@@ -13,12 +13,11 @@ class AndroidParam {
 
   /// Ad Attribution text.
   String attributionText;
+  bool dark;
+  bool tablet;
 
   /// Test device ids.
   List<String> testDevices;
-
-  // "AD" Label
-  bool dark;
 
   /// Converts this param to a Map
   dynamic toMap() {
@@ -29,6 +28,7 @@ class AndroidParam {
       'text_attribution': attributionText,
       'test_devices': testDevices,
       'dark': dark,
+      'tablet': tablet
     };
   }
 

@@ -18,12 +18,11 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import android.os.Build
-import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class UnifiedAdLayout(
-        context: Context,
+        private val context: Context,
         messenger: BinaryMessenger,
         id: Int,
         arguments: HashMap<String, Any>
@@ -48,52 +47,12 @@ class UnifiedAdLayout(
     private val methodChannel: MethodChannel = MethodChannel(messenger, "com.github.sakebook.android/unified_ad_layout_$id")
     private var ad: UnifiedNativeAd? = null
 
-    private val dark = arguments["dark"] as Boolean
+    private val tablet = arguments["tablet"] as Boolean
     private val attributionText = arguments["text_attribution"] as String
 
     init {
 
-        val palette = Palette(dark, context, hostPackageName)
-
-        unifiedNativeAdView.setBackgroundColor(palette.backgroundColor)
-
-        iconView.apply {
-            val current = (layoutParams as ConstraintLayout.LayoutParams)
-            current.width = palette.adImageSize.toInt()
-            current.height = palette.adImageSize.toInt()
-            layoutParams = current
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            iconView.foreground = palette.adImageForeground
-        }
-
-        headlineView.setTextColor(palette.textColor)
-        headlineView.typeface = palette.roboto500
-        headlineView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.adTextSize)
-
-        bodyView.setTextColor(palette.textColor)
-        bodyView.typeface = palette.roboto500
-        bodyView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.adTextSize)
-
-        attributionView.text = attributionText
-        attributionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.attributionTextSize)
-        attributionView.typeface = palette.roboto400
-        attributionView.apply {
-            val current = (layoutParams as ViewGroup.MarginLayoutParams)
-            current.topMargin = palette.attributionTopOffset.toInt()
-            layoutParams = current
-        }
-
-        callToActionView.setTextColor(palette.textColor)
-        callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
-        callToActionView.typeface = palette.roboto400
-        callToActionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, palette.actionButtonTextSize)
-        callToActionView.apply {
-            val current = (layoutParams as ViewGroup.MarginLayoutParams)
-            current.topMargin = palette.actionButtonTopOffset.toInt()
-            layoutParams = current
-        }
+        applyTheme(dark = arguments["dark"] as Boolean)
 
         val ids = arguments["test_devices"] as MutableList<String>?
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()
@@ -142,6 +101,56 @@ class UnifiedAdLayout(
                 .build()
                 .loadAd(AdRequest.Builder()
                         .build())
+    }
+
+    private fun applyTheme(dark: Boolean) {
+
+        val palette = Palette(
+                dark = dark,
+                tablet = tablet,
+                context = context,
+                hostPackageName = hostPackageName
+        )
+
+        unifiedNativeAdView.setBackgroundColor(palette.backgroundColor)
+
+        iconView.apply {
+            val current = (layoutParams as ConstraintLayout.LayoutParams)
+            current.width = palette.adImageSize
+            current.height = palette.adImageSize
+            layoutParams = current
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            iconView.foreground = palette.adImageForeground
+        }
+
+        headlineView.setTextColor(palette.textColor)
+        headlineView.typeface = palette.roboto500
+        headlineView.textSize = palette.adTextSize
+
+        bodyView.setTextColor(palette.textColor)
+        bodyView.typeface = palette.roboto500
+        bodyView.textSize = palette.adTextSize
+
+        attributionView.text = attributionText
+        attributionView.textSize = palette.attributionTextSize
+        attributionView.typeface = palette.roboto400
+        attributionView.apply {
+            val current = (layoutParams as ViewGroup.MarginLayoutParams)
+            current.topMargin = palette.attributionTopOffset.toInt()
+            layoutParams = current
+        }
+
+        callToActionView.setTextColor(palette.textColor)
+        callToActionView.setBackgroundResource(palette.actionButtonBackgroundId)
+        callToActionView.typeface = palette.roboto400
+        callToActionView.textSize = palette.actionButtonTextSize
+        callToActionView.apply {
+            val current = (layoutParams as ViewGroup.MarginLayoutParams)
+            current.topMargin = palette.actionButtonTopOffset
+            layoutParams = current
+        }
     }
 
     override fun getView(): View {
