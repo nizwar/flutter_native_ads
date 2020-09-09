@@ -14,7 +14,7 @@ class UnifiedAdLayout : NSObject, FlutterPlatformView {
     private let messeneger: FlutterBinaryMessenger
     private let frame: CGRect
     private let viewId: Int64
-    private let args: [String: Any]
+    private var args: [String: Any]
     private let adLoader: GADAdLoader
     
     private let placementId: String
