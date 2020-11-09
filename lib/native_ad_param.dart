@@ -15,6 +15,7 @@ class AndroidParam {
   String attributionText;
   bool dark;
   bool tablet;
+  bool debug;
 
   /// Test device ids.
   List<String> testDevices;

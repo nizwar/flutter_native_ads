@@ -18,6 +18,7 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import android.os.Build
+import android.util.Log
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -27,6 +28,16 @@ class UnifiedAdLayout(
         id: Int,
         arguments: HashMap<String, Any>
 ) : PlatformView {
+
+    private companion object {
+
+        private var seed = 1
+
+    }
+
+    private val identifier = seed++
+
+    private val TAG = "UnifiedAdLayout"
 
     private val hostPackageName = arguments["package_name"] as String
     private val layoutRes = context.resources.getIdentifier(arguments["layout_name"] as String, "layout", hostPackageName)
@@ -47,61 +58,66 @@ class UnifiedAdLayout(
     private val methodChannel: MethodChannel = MethodChannel(messenger, "com.github.sakebook.android/unified_ad_layout_$id")
     private var ad: UnifiedNativeAd? = null
 
+    private val placementId = arguments["placement_id"] as String
     private val tablet = arguments["tablet"] as Boolean
     private val attributionText = arguments["text_attribution"] as String
 
     init {
-
         applyTheme(dark = arguments["dark"] as Boolean)
+        setupTestDevices(arguments["test_devices"] as MutableList<String>?)
+        loadAd()
+        setupMethodCallHandler()
+    }
 
-        val ids = arguments["test_devices"] as MutableList<String>?
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()
+    private fun setupTestDevices(testDevicesIds: MutableList<String>?) {
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDevicesIds).build()
         MobileAds.setRequestConfiguration(configuration)
+    }
 
-        AdLoader.Builder(context, arguments["placement_id"] as String)
+    private fun loadAd() {
+
+        log("loadAd() start....")
+
+        AdLoader.Builder(context, placementId)
                 .forUnifiedNativeAd {
                     ad = it
                     ensureUnifiedAd(it)
                 }
                 .withAdListener(object : AdListener() {
+
                     override fun onAdImpression() {
-                        super.onAdImpression()
                         methodChannel.invokeMethod("onAdImpression", null)
                     }
 
                     override fun onAdLeftApplication() {
-                        super.onAdLeftApplication()
                         methodChannel.invokeMethod("onAdLeftApplication", null)
                     }
 
                     override fun onAdClicked() {
-                        super.onAdClicked()
                         methodChannel.invokeMethod("onAdClicked", null)
                     }
 
                     override fun onAdFailedToLoad(error: LoadAdError) {
-                        super.onAdFailedToLoad(error)
                         methodChannel.invokeMethod("onAdFailedToLoad", hashMapOf("errorCode" to error.code))
                     }
 
                     override fun onAdFailedToLoad(errorCode: Int) {
-                        super.onAdFailedToLoad(errorCode)
-                        // TODO: Migrate deprecated method.
                         methodChannel.invokeMethod("onAdFailedToLoad", hashMapOf("errorCode" to errorCode))
                     }
 
                     override fun onAdLoaded() {
-                        super.onAdLoaded()
                         rootLayout.visibility = View.VISIBLE
                         methodChannel.invokeMethod("onAdLoaded", null)
                     }
                 })
-                .withNativeAdOptions(NativeAdOptions.Builder()
-                        .build())
+                .withNativeAdOptions(NativeAdOptions.Builder().build())
                 .build()
-                .loadAd(AdRequest.Builder()
-                        .build())
+                .loadAd(AdRequest.Builder().build())
 
+        log("loadAd() end....")
+    }
+
+    private fun setupMethodCallHandler() {
         methodChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "applyTheme" -> {
@@ -115,6 +131,7 @@ class UnifiedAdLayout(
 
     private fun applyTheme(dark: Boolean) {
 
+        log("applyTheme($dark), started....")
         val palette = Palette(
                 dark = dark,
                 tablet = tablet,
@@ -162,6 +179,7 @@ class UnifiedAdLayout(
             current.topMargin = palette.actionButtonTopOffset
             layoutParams = current
         }
+        log("applyTheme(), finished....")
     }
 
     override fun getView(): View {
@@ -175,13 +193,19 @@ class UnifiedAdLayout(
     }
 
     private fun ensureUnifiedAd(ad: UnifiedNativeAd?) {
+
+        log("ensureUnifiedAd() started....")
+
         headlineView.text = ad?.headline
         bodyView.text = ad?.body
         callToActionView.text = ad?.callToAction
 
         mediaView?.setMediaContent(ad?.mediaContent)
-        iconView?.setImageDrawable(ad?.mediaContent?.mainImage
-                ?: ad?.images?.firstOrNull()?.drawable ?: ad?.icon?.drawable)
+        iconView?.setImageDrawable(
+                ad?.mediaContent?.mainImage
+                        ?: ad?.images?.firstOrNull()?.drawable
+                        ?: ad?.icon?.drawable
+        )
         starRatingView?.text = "${ad?.starRating}"
         storeView?.text = ad?.store
         priceView?.text = ad?.price
@@ -198,6 +222,43 @@ class UnifiedAdLayout(
         unifiedNativeAdView.priceView = priceView
         unifiedNativeAdView.advertiserView = advertiserView
 
-        unifiedNativeAdView.setNativeAd(ad)
+        try {
+            unifiedNativeAdView.setNativeAd(ad)
+        } catch (ignored: Throwable) {
+        }
+
+        log("ensureUnifiedAd() finished....")
+    }
+
+    private fun log(text: String) {
+        Log.d(TAG, "dbgId: $identifier, $text thread: ${Thread.currentThread().name}")
+    }
+
+
+    private class AdLoadingStack {
+
+        private val items = mutableListOf<UnifiedAdLayout>()
+
+        fun scheduleAdLoading(adLayout: UnifiedAdLayout) {
+            items.add(adLayout)
+            if (items.size == 1) {
+                loadNextAd()
+            }
+        }
+
+        fun notifyAdLoaded(adLayout: UnifiedAdLayout) {
+            remove(adLayout)
+            if (items.isNotEmpty()) {
+                loadNextAd()
+            }
+        }
+
+        private fun loadNextAd() {
+            items.lastOrNull()?.loadAd()
+        }
+
+        fun remove(adLayout: UnifiedAdLayout) {
+            items.remove(adLayout)
+        }
     }
 }

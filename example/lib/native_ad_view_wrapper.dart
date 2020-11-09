@@ -22,7 +22,7 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
   Widget build(BuildContext context) {
     super.build(context);
     return NativeAdView(
-      onParentViewCreated: (controller) {
+      onParentViewCreated: (NativeAdViewController controller) {
         _controller = controller;
       },
       androidParam: AndroidParam()
