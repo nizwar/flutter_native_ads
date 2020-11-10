@@ -30,9 +30,8 @@ class UnifiedAdLayout(
 ) : PlatformView {
 
     private companion object {
-
         private var seed = 1
-
+        private val adLoadingStack = AdLoadingStack()
     }
 
     private val identifier = seed++
@@ -65,7 +64,7 @@ class UnifiedAdLayout(
     init {
         applyTheme(dark = arguments["dark"] as Boolean)
         setupTestDevices(arguments["test_devices"] as MutableList<String>?)
-        loadAd()
+        adLoadingStack.notifyNewAdLayoutCreated(this)
         setupMethodCallHandler()
     }
 
@@ -98,16 +97,14 @@ class UnifiedAdLayout(
                     }
 
                     override fun onAdFailedToLoad(error: LoadAdError) {
+                        adLoadingStack.notifyAdLoadingFinished(this@UnifiedAdLayout)
                         methodChannel.invokeMethod("onAdFailedToLoad", hashMapOf("errorCode" to error.code))
-                    }
-
-                    override fun onAdFailedToLoad(errorCode: Int) {
-                        methodChannel.invokeMethod("onAdFailedToLoad", hashMapOf("errorCode" to errorCode))
                     }
 
                     override fun onAdLoaded() {
                         rootLayout.visibility = View.VISIBLE
                         methodChannel.invokeMethod("onAdLoaded", null)
+                        adLoadingStack.notifyAdLoadingFinished(this@UnifiedAdLayout)
                     }
                 })
                 .withNativeAdOptions(NativeAdOptions.Builder().build())
@@ -239,15 +236,17 @@ class UnifiedAdLayout(
 
         private val items = mutableListOf<UnifiedAdLayout>()
 
-        fun scheduleAdLoading(adLayout: UnifiedAdLayout) {
+        fun notifyNewAdLayoutCreated(adLayout: UnifiedAdLayout) {
+
             items.add(adLayout)
+
             if (items.size == 1) {
                 loadNextAd()
             }
         }
 
-        fun notifyAdLoaded(adLayout: UnifiedAdLayout) {
-            remove(adLayout)
+        fun notifyAdLoadingFinished(adLayout: UnifiedAdLayout) {
+            items.remove(adLayout)
             if (items.isNotEmpty()) {
                 loadNextAd()
             }
@@ -255,10 +254,6 @@ class UnifiedAdLayout(
 
         private fun loadNextAd() {
             items.lastOrNull()?.loadAd()
-        }
-
-        fun remove(adLayout: UnifiedAdLayout) {
-            items.remove(adLayout)
         }
     }
 }
