@@ -9,10 +9,10 @@ class NativeAdViewWrapper extends StatefulWidget {
   NativeAdViewWrapperState createState() => NativeAdViewWrapperState();
 }
 
-class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
-    with AutomaticKeepAliveClientMixin {
+class NativeAdViewWrapperState extends State<NativeAdViewWrapper> with AutomaticKeepAliveClientMixin {
+  @override
   bool get wantKeepAlive => true;
-  NativeAdViewController _controller;
+  late NativeAdViewController _controller;
 
   Future<void> notifyThemeChanged(bool dark) async {
     await _controller.notifyThemeChanged(dark);
@@ -26,24 +26,23 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
         _controller = controller;
       },
       androidParam: AndroidParam()
-        ..placementId = "ca-app-pub-3940256099942544/2247696110" // test
-        ..packageName = "sakebook.github.com.native_ads_example"
-        ..layoutName = "native_ad_layout"
-        ..attributionText = "реклама"
-        ..testDevices = ["00000000000000000000000000000000"]
+        ..placementId = 'ca-app-pub-3940256099942544/2247696110' // test
+        ..packageName = 'sakebook.github.com.native_ads_example'
+        ..layoutName = 'native_ad_layout'
+        ..attributionText = 'реклама'
+        ..testDevices = ['00000000000000000000000000000000']
         ..tablet = false
         ..dark = false,
       iosParam: IOSParam()
-        ..placementId = "ca-app-pub-3940256099942544/3986624511" // test
-        ..bundleId = "sakebook.github.com.nativeAdsExample"
-        ..layoutName = "UnifiedNativeAdView"
-        ..attributionText = "SPONSORED"
-        ..testDevices = ["00000000000000000000000000000000"],
-      onAdImpression: () => print("onAdImpression!!!"),
-      onAdClicked: () => print("onAdClicked!!!"),
-      onAdFailedToLoad: (Map<String, dynamic> error) =>
-          print("onAdFailedToLoad!!! $error"),
-      onAdLoaded: () => print("onAdLoaded!!!"),
+        ..placementId = 'ca-app-pub-3940256099942544/3986624511' // test
+        ..bundleId = 'sakebook.github.com.nativeAdsExample'
+        ..layoutName = 'UnifiedNativeAdView'
+        ..attributionText = 'SPONSORED'
+        ..testDevices = ['00000000000000000000000000000000'],
+      onAdImpression: () => print('onAdImpression!!!'),
+      onAdClicked: () => print('onAdClicked!!!'),
+      onAdFailedToLoad: (Map<String, dynamic> error) => print('onAdFailedToLoad!!! $error'),
+      onAdLoaded: () => print('onAdLoaded!!!'),
     );
   }
 }

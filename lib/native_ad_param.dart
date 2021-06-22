@@ -3,22 +3,22 @@ import 'dart:ui';
 /// Android parameter for ad.
 class AndroidParam {
   /// AdMob placement id.
-  String placementId;
+  String? placementId;
 
   /// Android package name of plugin used app.
-  String packageName;
+  String? packageName;
 
   /// XML file name that your custom layout for native ad.
-  String layoutName;
+  String? layoutName;
 
   /// Ad Attribution text.
-  String attributionText;
-  bool dark;
-  bool tablet;
-  bool debug;
+  String? attributionText;
+  bool? dark;
+  bool? tablet;
+  bool? debug;
 
   /// Test device ids.
-  List<String> testDevices;
+  List<String>? testDevices;
 
   /// Converts this param to a Map
   dynamic toMap() {
@@ -33,47 +33,44 @@ class AndroidParam {
     };
   }
 
-  String _toAndroidColor(Color color) =>
-      color == null
-          ? null
-          : '#' + color.value.toRadixString(16);
+  String? _toAndroidColor(Color? color) => color == null ? null : '#' + color.value.toRadixString(16);
 }
 
 /// iOS parameter for ad.
 class IOSParam {
   /// AdMob placement id.
-  String placementId;
+  String? placementId;
 
   /// iOD bundle id of plugin used app.
-  String bundleId;
+  String? bundleId;
 
   /// XIB file name that your custom layout for native ad.
-  String layoutName;
+  String? layoutName;
 
   /// Ad Attribution text.
-  String attributionText;
+  String? attributionText;
 
   /// Test device ids.
-  List<String> testDevices;
+  List<String>? testDevices;
 
   //Ad Title
-  double headlineFontSize;
-  String headlineFontColor;
+  double? headlineFontSize;
+  String? headlineFontColor;
 
   //Ad description
-  double bodyFontSize;
-  String bodyFontColor;
+  double? bodyFontSize;
+  String? bodyFontColor;
 
   // "AD" Label
-  double attributionViewFontSize;
-  String attributionViewFontColor;
+  double? attributionViewFontSize;
+  String? attributionViewFontColor;
 
   // Button
-  double callToActionFontSize;
-  String callToActionFontColor;
-  String callToActionBackgroundColor;
+  double? callToActionFontSize;
+  String? callToActionFontColor;
+  String? callToActionBackgroundColor;
 
-  String backgroundColor;
+  String? backgroundColor;
 
   /// Converts this param to a Map
   dynamic toMap() {
