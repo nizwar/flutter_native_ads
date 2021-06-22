@@ -5,14 +5,13 @@ import 'package:native_ads/native_ad_event_delegate.dart';
 import 'package:native_ads/native_ad_param.dart';
 
 /// Called when an impression is recorded for an ad.
-typedef NativeAdViewCreatedCallback = void Function(
-    NativeAdViewController controller);
+typedef NativeAdViewCreatedCallback = void Function(NativeAdViewController controller);
 
 /// Wraps PlatformView view.
 class NativeAdView extends StatefulWidget {
   /// Create a NativeAdView
   const NativeAdView({
-    Key key,
+    Key? key,
     this.onParentViewCreated,
     this.androidParam,
     this.iosParam,
@@ -24,21 +23,28 @@ class NativeAdView extends StatefulWidget {
   }) : super(key: key);
 
   /// Called when PlatformView created.
-  final NativeAdViewCreatedCallback onParentViewCreated;
+  final NativeAdViewCreatedCallback? onParentViewCreated;
+
   /// Android parameter for ad.
-  final AndroidParam androidParam;
+  final AndroidParam? androidParam;
+
   /// iOS parameter for ad.
-  final IOSParam iosParam;
+  final IOSParam? iosParam;
+
   /// Called when an impression is recorded for an ad.
-  final Function() onAdImpression;
+  final Function()? onAdImpression;
+
   /// Called when an ad leaves the application (e.g., to go to the browser).
-  final Function() onAdLeftApplication;
+  final Function()? onAdLeftApplication;
+
   /// Called when a click is recorded for an ad.
-  final Function() onAdClicked;
+  final Function()? onAdClicked;
+
   /// Called when an ad request failed.
-  final Function(Map<String, dynamic>) onAdFailedToLoad;
+  final Function(Map<String, dynamic>)? onAdFailedToLoad;
+
   /// Called when an ad is received.
-  final Function() onAdLoaded;
+  final Function()? onAdLoaded;
 
   @override
   State<StatefulWidget> createState() => _NativeAdViewState(
@@ -63,19 +69,18 @@ class _NativeAdViewState extends State<NativeAdView> {
       return AndroidView(
         viewType: 'com.github.sakebook.android/unified_ad_layout',
         onPlatformViewCreated: _onPlatformViewCreated,
-        creationParams: widget.androidParam.toMap(),
+        creationParams: widget.androidParam?.toMap(),
         creationParamsCodec: const StandardMessageCodec(),
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
         viewType: 'com.github.sakebook.ios/unified_ad_layout',
         onPlatformViewCreated: _onPlatformViewCreated,
-        creationParams: widget.iosParam.toMap(),
+        creationParams: widget.iosParam?.toMap(),
         creationParamsCodec: const StandardMessageCodec(),
       );
     }
-    return Text(
-        '$defaultTargetPlatform is not yet supported by the text_view plugin');
+    return Text('$defaultTargetPlatform is not yet supported by the text_view plugin');
   }
 
   void _onPlatformViewCreated(int id) {
@@ -84,7 +89,7 @@ class _NativeAdViewState extends State<NativeAdView> {
     }
     final NativeAdViewController controller = NativeAdViewController._(id);
     controller._channel.setMethodCallHandler(delegate.handleMethod);
-    widget.onParentViewCreated(controller);
+    widget.onParentViewCreated?.call(controller);
   }
 }
 

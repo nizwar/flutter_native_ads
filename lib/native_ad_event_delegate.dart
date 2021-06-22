@@ -12,38 +12,42 @@ class NativeAdEventDelegate {
   });
 
   /// Called when an impression is recorded for an ad.
-  final Function() onAdImpression;
+  final Function()? onAdImpression;
+
   /// Called when an ad leaves the application (e.g., to go to the browser).
-  final Function() onAdLeftApplication;
+  final Function()? onAdLeftApplication;
+
   /// Called when a click is recorded for an ad.
-  final Function() onAdClicked;
+  final Function()? onAdClicked;
+
   /// Called when an ad request failed.
-  final Function(Map<String, dynamic>) onAdFailedToLoad;
+  final Function(Map<String, dynamic>)? onAdFailedToLoad;
+
   /// Called when an ad is received.
-  final Function() onAdLoaded;
+  final Function()? onAdLoaded;
 
   /// Handling of method that Android or iOS.
   Future<dynamic> handleMethod(MethodCall call) async {
     switch (call.method) {
       case 'onAdImpression':
       case 'nativeAdDidRecordImpression':
-        onAdImpression();
+        onAdImpression?.call();
         break;
       case 'onAdLeftApplication':
       case 'nativeAdWillLeaveApplication':
-        onAdLeftApplication();
+        onAdLeftApplication?.call();
         break;
       case 'onAdClicked':
       case 'nativeAdDidRecordClick':
-        onAdClicked();
+        onAdClicked?.call();
         break;
       case 'onAdFailedToLoad':
       case 'didFailToReceiveAdWithError':
-        onAdFailedToLoad(Map<String, dynamic>.from(call.arguments));
+        onAdFailedToLoad?.call(Map<String, dynamic>.from(call.arguments));
         break;
       case 'onAdLoaded':
       case 'didReceive':
-        onAdLoaded();
+        onAdLoaded?.call();
         break;
     }
   }
